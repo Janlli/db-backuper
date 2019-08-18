@@ -13,7 +13,6 @@ class BackupController extends Controller
     private $result = '';
     private $tblNames = [];
     private $createTable;
-    private $filename;
     private $rcdCount;
     private $tblCount;
 
@@ -35,9 +34,8 @@ class BackupController extends Controller
 
     private function backup()
     {
-        if (!isset($_SESSION['startRecord'])) {
-            $this->filename = 'backup-'.date('Y-m-d H-i-s').'.sql';
-            $_SESSION['startRecord'] = $this->filename;
+        if (!isset($_SESSION['fileName'])) {
+            $_SESSION['fileName'] = 'backup-'.date('Y-m-d H-i-s').'.sql';
         }
        (isset($_SESSION['rcdCount'])) ? $this->rcdCount = $_SESSION['rcdCount'] : $this->rcdCount = 0;
        (isset($_SESSION['tblCount'])) ? $this->tblCount = $_SESSION['tblCount'] : $this->tblCount = 0;
@@ -100,7 +98,7 @@ class BackupController extends Controller
 
     private function writeResult()
     {
-        $resultFile = fopen('backups/'.$this->filename, 'a');
+        $resultFile = fopen('backups/'.$_SESSION['fileName'], 'a');
         fwrite($resultFile, $this->result);
         fclose($resultFile);
     }
@@ -114,10 +112,3 @@ class BackupController extends Controller
         exit();
     }
 }
-
-
-
-
-
-
-
