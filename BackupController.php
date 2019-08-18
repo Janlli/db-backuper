@@ -66,6 +66,7 @@ class BackupController extends Controller
                             $this->result .= "'".$value."', ";
                             $this->currentTime = time();
                             if ($this->redirTime < $this->currentTime - $this->startTime) {
+                                $this->lockTables(false);
                                 $this->redirect();
                             }
                         }
