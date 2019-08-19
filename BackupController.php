@@ -59,7 +59,7 @@ class BackupController extends Controller
                     foreach ($inserts as $insert) {
                         $this->result .= "\n ( ";
                         foreach ($insert as $value) {
-                            $value = mysql_real_escape_string($value);
+                            $value = mysqli_real_escape_string($value);
                             $this->result .= "'".$value."', ";
                             $this->currentTime = time();
                             if ($this->redirTime < $this->currentTime - $this->startTime) {
