@@ -59,8 +59,7 @@ class BackupController extends Controller
                     foreach ($inserts as $insert) {
                         $this->result .= "\n ( ";
                         foreach ($insert as $value) {
-                            $value = str_replace("'", "\'", $value);
-                            $value = str_replace('"', '\\"', $value);
+                            $value = addslashes($value);
                             $this->result .= "'".$value."', ";
                             $this->currentTime = time();
                             if ($this->redirTime < $this->currentTime - $this->startTime) {
