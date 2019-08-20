@@ -97,6 +97,9 @@ class BackupController extends Controller
 
     private function writeResult()
     {
+        if(!file_exists('backups')) {
+        mkdir('backups');
+    }
         $resultFile = fopen('backups/'.$_SESSION['fileName'], 'a');
         fwrite($resultFile, $this->result);
         fclose($resultFile);
