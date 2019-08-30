@@ -18,6 +18,7 @@ class BackupController extends Controller
 
     public function index()
     {
+        session_start();
         $this->startTime = time();
         $execTime = ini_get('max_execution_time');
         $this->redirTime = $execTime - 2;
@@ -30,6 +31,9 @@ class BackupController extends Controller
         $this->lockTables(true);
         $this->backup();
         $this->lockTables(false);
+        unset($_SESSION['fileName']);
+        unset($_SESSION['tblCount']);
+        unset($_SESSION['rcdCount']);
     }
 
     private function backup()
@@ -73,7 +77,6 @@ class BackupController extends Controller
                 }
                 $this->result = substr_replace($this->result, ';', -1);
             }
-
             $this->result .= "\n\n\n";
             ++$this->tblCount;
             $this->rcdCount = 0;
@@ -96,8 +99,7 @@ class BackupController extends Controller
     }
 
     private function writeResult()
-    {
-        if(!file_exists('backups')) {
+    {   if(!file_exists('backups')) {
         mkdir('backups');
     }
         $resultFile = fopen('backups/'.$_SESSION['fileName'], 'a');
@@ -110,7 +112,19 @@ class BackupController extends Controller
         $this->writeResult();
         $_SESSION['rcdCount'] = $this->rcdCount;
         $_SESSION['tblCount'] = $this->tblCount;
-        header('Location: '.'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+       echo
+        "<!DOCTYPE html>
+        <html lang=\"en\">
+        <head>
+          <title>Loading...</title>
+          <meta charset=\"utf-8\">
+          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+          <meta http-equiv=\"refresh\" content=\"2\">
+        </head>
+        <body>
+        <p>Loading...</p>
+        </body>
+        </html>";
         exit();
     }
 }
