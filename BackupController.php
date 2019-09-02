@@ -24,7 +24,7 @@ class BackupController extends Controller
         $this->startTime = time();
         $execTime = ini_get('max_execution_time');
         $this->maxMemoryScript = (int) ini_get('memory_limit');
-        $this->maxMemoryScript = $this->maxMemoryOfScript * 1024 * 1024;
+        $this->maxMemoryScript = $this->maxMemoryScript * 1024 * 1024;
         $this->redirTime = $execTime - 4;
         $tab = \DB::select('SHOW TABLES');
         foreach ($tab as $k => $v) {
