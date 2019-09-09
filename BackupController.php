@@ -45,7 +45,7 @@ class BackupController extends Controller
         unset($_SESSION['rcdCount']);
     }
     
-    private function backup()
+    protected function backup()
     {
         if (!isset($_SESSION['fileName'])) {
             $_SESSION['fileName'] = 'backup-'.date('Y-m-d H-i-s').'.sql';
@@ -98,7 +98,7 @@ class BackupController extends Controller
         $this->writeResult();
     }
 
-    private function lockTables(bool $lock)
+    protected function lockTables(bool $lock)
     {
         (true === $lock) ? $this->lockString = 'LOCK TABLES ' : $this->lockString = 'UNLOCK TABLES ';
         $showTables = \DB::select('SHOW TABLES');
@@ -112,7 +112,7 @@ class BackupController extends Controller
         \DB::raw($this->lockString);
     }
 
-    private function writeResult()
+    protected function writeResult()
     {   if (!file_exists('backups')) {
             mkdir('backups');
         }
@@ -121,7 +121,7 @@ class BackupController extends Controller
         fclose($resultFile);
     }
 
-    private function redirect()
+    protected function redirect()
     {
         $this->writeResult();
         $_SESSION['rcdCount'] = $this->rcdCount;
